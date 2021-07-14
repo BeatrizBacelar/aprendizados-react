@@ -1,0 +1,14 @@
+#Conceitos básicos React
+
+- Elementos react são criados com creatElement
+- O babel tranforma o JSX em funções de React
+
+- Criar componentes separados e reutilizar em várias partes do site
+
+- Hooks para acompanhar a sincronização do estado dos elementos (para não precisar atualizar o estado/valor em todos os lugares que o elemento está)
+- Lógica próxima ao elemento
+
+##Webpack e babel
+
+
+
