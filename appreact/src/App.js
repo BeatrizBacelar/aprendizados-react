@@ -1,30 +1,96 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useState } from "react";
-import Product from "./Product";
+import React, { useState, useEffect, useMemo} from "react";
 
+const formFields = [
+  {
+    id: 'nome',
+    label: 'Nome',
+    type: 'text'
+  },
+  {
+    id: 'email',
+    label: 'E-mail',
+    type: 'email'
+  },
+  {
+    id: 'senha',
+    label: 'Senha',
+    type: 'password'
+  },
+  {
+    id: 'cep',
+    label: 'CEP',
+    type: 'text'
+  },
+  {
+    id: 'rua',
+    label: 'Rua',
+    type: 'text'
+  },
+  {
+    id: 'numero',
+    label: 'Número',
+    type: 'text'
+  },
+  {
+    id: 'bairro',
+    label: 'Bairro',
+    type: 'text'
+  },
+  {
+    id: 'cidade',
+    label: 'Cidade',
+    type: 'text'
+  },
+  {
+    id: 'estado',
+    label: 'Estado',
+    type: 'text'
+  }
+]
 
 const App = () => {
+  const [form, setForm] = useState(
+    formFields.reduce((acc, field) => {
+    return {
+      ...acc,
+      [field.id] : '',
+    };
+  }, {}));
 
-    const [dados, setDados] = useState(null);
-    const [loading, setLoading] = useState(null);
+  const [response, setResponse] = useState(null);
+  
+  function handleChange({target}){
+    const {id, value} = target;
+    setForm({...form, [id]: value});
+  }
 
- async function handleClick (event) {
-   setLoading(true);
-  const response = await fetch(`https://ranekapi.origamid.dev/json/api/produto/${event.target.innerText}`);
-  const json = await response.json();
-  setDados(json);
-  setLoading(false);
-}
-
-  return (
-    <div>
-      <button style={{margin: '.5rem'}}onClick={handleClick}>notebook</button>
-      <button style={{margin: '.5rem'}}onClick={handleClick}>smartphone</button>
-      <button style={{margin: '.5rem'}} onClick={handleClick}>tablet</button>
-      {loading && <p>Carregando...</p>}
-      {!loading && dados && <Product dados={dados} />}
-    </div>
-  );
+  function handleSubmit (event) {
+    event.preventDefault();
+    fetch('https://ranekapi.origamid.dev/json/api/usuario', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(form),
+    }).then(response => {
+      setResponse(response);
+    });
+  }
+ 
+ 
+    return (
+    <form onSubmit={handleSubmit}>
+      {formFields.map(({id, label, type}) => (
+      <div key={id}> 
+        <label htmlFor={id}>{label}</label>
+        <input  type={type} id={id} value={form[id]} onChange={handleChange}/>
+      </div>
+      ))}
+      {response && response.ok && <p>Formulário enviado</p> }
+      <button>Enviar</button>
+    </form>
+    );
 };
 
 export default App;
