@@ -2,7 +2,7 @@ import React from 'react';
 import Input from './Input';
 import Button from './Button';
 
-const Form = () => {
+const Form1 = () => {
     return (
         <form>
             <p>
@@ -18,4 +18,4 @@ const Form = () => {
     )
 }
 
-export default Form
+export default Form1;
